@@ -1,22 +1,22 @@
----
-abstract: 'Test::Mojo and more.'
+--- #YAML:1.0
+name:               Test-Mojo-More
+version:            0.03
+abstract:           Test::Mojo and more.
 author:
-  - 'coolmen <coolmen78@gmail.com>'
-build_requires:
-  Test::More: 0
+    - coolmen <coolmen78@gmail.com>
+license:            MIT
+distribution_type:  module
 configure_requires:
-  ExtUtils::MakeMaker: 0
-dynamic_config: 1
-generated_by: 'ExtUtils::MakeMaker version 6.64, CPAN::Meta::Converter version 2.112621'
-license: mit
-meta-spec:
-  url: http://module-build.sourceforge.net/META-spec-v1.4.html
-  version: 1.4
-name: Test-Mojo-More
-no_index:
-  directory:
-    - t
-    - inc
+    ExtUtils::MakeMaker:  0
+build_requires:
+    Test::More:  0
 requires:
-  perl: 5.1
-version: 0.02
+    perl:  5.01
+no_index:
+    directory:
+        - t
+        - inc
+generated_by:       ExtUtils::MakeMaker version 6.57_05
+meta-spec:
+    url:      http://module-build.sourceforge.net/META-spec-v1.4.html
+    version:  1.4

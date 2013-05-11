@@ -9,7 +9,7 @@ WriteMakefile(
     ABSTRACT_FROM    => 'lib/Test/Mojo/More.pm',
     LICENSE          => 'MIT',
     PL_FILES         => {},
-    MIN_PERL_VERSION => 5.10,
+    MIN_PERL_VERSION => 5.010,
     CONFIGURE_REQUIRES => {
         'ExtUtils::MakeMaker' => 0,
     },

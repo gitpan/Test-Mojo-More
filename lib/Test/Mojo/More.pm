@@ -20,7 +20,7 @@ Version 0.01
 
 =cut
 
-our $VERSION = 0.02;
+our $VERSION = 0.030_000;
 
 
 =head1 SYNOPSIS
@@ -91,7 +91,7 @@ sub flash_is {
 	$flash = $self->_flash($flash);
 	return $self->_test(
 		'is_deeply',
-		Mojo::JSON::Pointer->new->get( $flash, $path ? "/$path" : "/" ),
+		Mojo::JSON::Pointer->new->get( $flash, $path ? "/$path" : "" ),
 		$value,
 		$desc || "flash exact match for JSON Pointer \"$key\"",
 	);
@@ -110,11 +110,21 @@ the given JSON Pointer with Mojo::JSON::Pointer.
 
 sub flash_has {
 	my ($self, $key, $value, $desc) = @_;
-	my ( $flash, $path ) = $self->_prepare_key($key); 
+	my ( $flash, $path ) = $self->_prepare_key($key);
+
+#	say $flash, $path;
+ 
 	$flash = $self->_flash($flash);
+
+#	use Data::Dumper;
+#	say Dumper $flash;
+#	say '$flash: ', Mojo::JSON::Pointer->new->get( $flash, $path ? "/$path" : "" );
+#	say 'undef:  ', Mojo::JSON::Pointer->new->get( undef, $path ? "/$path" : "" );
+#	say '{}:     ', Mojo::JSON::Pointer->new->get( {}, $path ? "/$path" : "" );
+
 	return $self->_test(
 		'ok',
-		!!Mojo::JSON::Pointer->new->get( $flash, $path ? "/$path" : "/" ),
+		!!Mojo::JSON::Pointer->new->get( $flash, $path ? "/$path" : "" ),
 		$desc || "flash has value for JSON Pointer \"$key\"",
 	);
 }
@@ -136,7 +146,7 @@ sub flash_hasnt {
 	$flash = $self->_flash($flash);
 	return $self->_test(
 		'ok',
-		!Mojo::JSON::Pointer->new->get( $flash, $path ? "/$path" : "/" ),
+		!Mojo::JSON::Pointer->new->get( $flash, $path ? "/$path" : "" ),
 		$desc || "flash has no value for JSON Pointer \"$key\""
 	);	
 }
@@ -215,6 +225,9 @@ sub _flash {
 	return $_[0]->_controller->flash( $_[1] ) if @_ == 2;
 	{}
 }
+
+sub cookies { return $_[0]->_controller->req->cookies }
+sub flashes { return $_[0]->_session->{flash} || {}   }
 
 sub _cookie {
 	return $_[0]->_controller->cookie( $_[1] );
