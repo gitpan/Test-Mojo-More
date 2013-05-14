@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Test-Mojo-More
-version:            0.03
+version:            0.04
 abstract:           Test::Mojo and more.
 author:
     - coolmen <coolmen78@gmail.com>
@@ -11,7 +11,8 @@ configure_requires:
 build_requires:
     Test::More:  0
 requires:
-    perl:  5.01
+    Mojolicious:  0
+    perl:         5.01
 no_index:
     directory:
         - t

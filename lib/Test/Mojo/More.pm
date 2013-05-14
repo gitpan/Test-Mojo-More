@@ -16,11 +16,11 @@ Test::Mojo::More - Test::Mojo and more.
 
 =head1 VERSION
 
-Version 0.01
+Version 0.04
 
 =cut
 
-our $VERSION = 0.030_000;
+our $VERSION = 0.040_000;
 
 
 =head1 SYNOPSIS
@@ -66,9 +66,27 @@ the following new ones.
 
 Currect DOM from transaction.
 
+
+=head2 C<cookie_hashref>
+
+  $cookie = $t->cookie_hashref;
+
+Current cookies from transaction.
+
+
+=head2 C<flash_hashref>
+
+  $flases = $t->flash_hashref;
+
+Current flashes from transaction.
+
+
 =cut
 
-sub dom { shift->tx->res->dom };
+sub dom            { return shift->tx->res->dom                                                     }
+sub cookie_hashref { return { map { $_->name => $_->value } @{ $_[0]->_controller->req->cookies } } }
+sub flash_hashref  { return $_[0]->_session->{flash} || {}                                          }
+
 
 
 =head1 METHODS
@@ -112,15 +130,7 @@ sub flash_has {
 	my ($self, $key, $value, $desc) = @_;
 	my ( $flash, $path ) = $self->_prepare_key($key);
 
-#	say $flash, $path;
- 
 	$flash = $self->_flash($flash);
-
-#	use Data::Dumper;
-#	say Dumper $flash;
-#	say '$flash: ', Mojo::JSON::Pointer->new->get( $flash, $path ? "/$path" : "" );
-#	say 'undef:  ', Mojo::JSON::Pointer->new->get( undef, $path ? "/$path" : "" );
-#	say '{}:     ', Mojo::JSON::Pointer->new->get( {}, $path ? "/$path" : "" );
 
 	return $self->_test(
 		'ok',
@@ -225,9 +235,6 @@ sub _flash {
 	return $_[0]->_controller->flash( $_[1] ) if @_ == 2;
 	{}
 }
-
-sub cookies { return $_[0]->_controller->req->cookies }
-sub flashes { return $_[0]->_session->{flash} || {}   }
 
 sub _cookie {
 	return $_[0]->_controller->cookie( $_[1] );

@@ -41,6 +41,16 @@ ATTRIBUTES
 
     Currect DOM from transaction.
 
+  "cookie_hashref"
+      $cookie = $t->cookie_hashref;
+
+    Current cookies from transaction.
+
+  "flash_hashref"
+      $flases = $t->flash_hashref;
+
+    Current flashes from transaction.
+
 METHODS
     Test::Mojo::More inherits all method from Test::Mojo and inplements the
     following new ones.
