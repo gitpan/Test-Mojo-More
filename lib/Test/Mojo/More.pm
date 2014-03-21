@@ -16,11 +16,11 @@ Test::Mojo::More - Test::Mojo and more.
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =cut
 
-our $VERSION = 0.040_000;
+our $VERSION = 0.050_000;
 
 
 =head1 SYNOPSIS
@@ -247,13 +247,18 @@ sub _controller {
 	my $req = new Mojo::Message::Request;
 	$req->cookies( join "; ", map{ $_->name ."=". $_->value } @{$self->tx->res->cookies} );
 
-	# Make session
+	# Make app && controller
+	my $app = Mojolicious->new();
 	my $c = Mojolicious::Controller->new;
 	$c->tx->req( $req );
-	# XXX
-	$c->stash->{'mojo.secret'} //= $self->app->secret;
-#	$self->app->handler( $c );
-	$self->app->sessions->load( $c );
+
+	# XXX copy secret
+	my $secret = $app->can('secrets') || $app->can('secret');
+	$secret->( $app, [ @{ ( $self->app->can('secrets') ||  $self->app->can('secret') )->( $self->app ) } ] );
+
+	# Init
+	$app->handler( $c );
+	$app->sessions->load( $c );
 
 	$c;
 }
